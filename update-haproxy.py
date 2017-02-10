@@ -51,6 +51,11 @@ def main(args):
                                                           security_group=security_group,
                                                           region=args.region)
 
+    for security_group in instances:
+        if not instances[security_group]:
+            logging.info('No instances for security group, assume this is an aws cli failure and abort')
+            return
+            
     # Generate the new config from the template.
     logging.info('Generating configuration for haproxy.')
     new_configuration = generate_haproxy_config(template=args.template,
